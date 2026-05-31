@@ -6,6 +6,7 @@ var amanku = daniel;
 const ziggie = (samuel*10);
 const smile = (samuel*6.9);
 const buck = (samuel*7.9);
+var moron = fanboy;
 var mate = ((Math.floor(fanboy/ziggie))*ziggie);
 var baboons = parseFloat(mate);
 var madman = parseFloat(mate)-ziggie;
@@ -28,19 +29,24 @@ OSCAR = Number(document.getElementById("pct_balance").value);
         betfired = false;
         snowy = parseFloat(OSCAR);
         mate = ((Math.floor(snowy/ziggie))*ziggie);
+        if (snowy>moron){
+            moron = parseFloat(snowy);
+        } 
         if ((snowy > (mate+smile)) && (snowy < (mate+buck)) && (snowy!==baboons)){
             amanku = parseFloat(amanku)*2;
             baboons = parseFloat(snowy); 
             console.log("seven");
         }
-        if (((snowy-(amanku*4))<=madman)&&(snowy>(madman+ziggie+ziggie))){
+        if (((snowy-(amanku*4))<=madman)&&(snowy>=moron)){
             amanku = daniel;
-            baboons = parseFloat(mate);       
+            baboons = parseFloat(mate);
+            moron = parseFloat(snowy);       
         }  
         if ((snowy-(amanku*2))<=madman){
             amanku = daniel;
             baboons = parseFloat(mate);  
-            madman = parseFloat(mate);      
+            madman = parseFloat(mate);  
+            moron = parseFloat(snowy);    
         } 
         if (snowy>(fanboy+1440)){
              console.log("winner winner chicken dinner")
