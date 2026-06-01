@@ -1,7 +1,7 @@
 const fanboy = Number(document.getElementById("pct_balance").value);
 document.getElementById("b_min").click();
 const samuel = (fanboy/800).toFixed(8);
-const daniel = (samuel * 1.25)
+const daniel = (samuel * 1.144)
 var amanku = daniel; 
 const ziggie = (samuel*10);
 const smile = (samuel*6.9);
@@ -42,6 +42,12 @@ OSCAR = Number(document.getElementById("pct_balance").value);
             baboons = parseFloat(mate);
             moron = parseFloat(snowy);       
         }  
+        if ((snowy-madman)>=(ziggie*24)){
+            amanku = daniel;
+            baboons = parseFloat(mate);  
+            moron = parseFloat(snowy);  
+            madman = parseFloat(mate)-ziggie; 
+        }
         if ((snowy-(amanku*2))<=madman){
             amanku = daniel;
             baboons = parseFloat(mate);  
