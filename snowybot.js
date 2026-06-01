@@ -42,7 +42,7 @@ OSCAR = Number(document.getElementById("pct_balance").value);
             baboons = parseFloat(mate);
             moron = parseFloat(snowy);       
         }  
-        if ((snowy-madman)>=(ziggie*24)){
+        if ((snowy-madman)>=(ziggie*10)){
             amanku = daniel;
             baboons = parseFloat(mate);  
             moron = parseFloat(snowy);  
@@ -54,7 +54,7 @@ OSCAR = Number(document.getElementById("pct_balance").value);
             madman = parseFloat(mate);  
             moron = parseFloat(snowy);    
         } 
-        if (snowy>(fanboy+1440)){
+        if (snowy>(fanboy*1.24)){
              console.log("winner winner chicken dinner")
              heartbeat=false;
              return
