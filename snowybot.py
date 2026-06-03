@@ -406,42 +406,56 @@ class BotEngine(QMainWindow):
         if self.heartbeat and (not self.bet_in_flight) and (self.tracked_balance != self.shadow):
             self.last_activity_time = time.time()
             self.lowertens = round(((math.floor(self.tracked_balance / self.tens))* self.tens), 8)
-            if ((self.tracked_balance - (self.neXtbet*2))<=self.olddownbalance):
+            if ((self.tracked_balance > (self.lowertens + self.sevens)) and (self.tracked_balance < (self.lowertens + self.eights)) and (self.tracked_balance != self.oldsevensbalance)):
+                self.neXtbet = round((self.neXtbet * 2), 8)
+                self.oldsevensbalance = float(self.tracked_balance)
+            if ((self.tracked_balance<=(self.olddownbalance+(self.neXtbet*2))) and (self.tracked_balance!=self.oldsevensbalance)):
                 self.neXtbet = self.snowy
                 self.oldsevensbalance = float(self.lowertens)
                 self.olddownbalance = float(self.lowertens) 
-                self.oldupbalance = float(self.tracked_balance)
-            if (((self.tracked_balance - (self.neXtbet*4))<=self.olddownbalance) and (self.tracked_balance>=(self.olddownbalance+self.tens+self.tens))):
+                self.oldupbalance = float(self.lowertens)
+            if ((self.tracked_balance>=(self.oldupbalance+(self.tens*4))) and (self.tracked_balance!=self.oldsevensbalance)):
                 self.neXtbet = self.snowy
                 self.oldsevensbalance = float(self.lowertens)
-                self.oldupbalance = float(self.tracked_balance)
-            if ((self.tracked_balance > (self.lowertens + self.sevens)) and (self.tracked_balance < (self.lowertens + self.eights)) and (self.tracked_balance != self.oldsevensbalance)):
-                self.neXtbet = round((self.neXtbet * 2), 8)
-                self.oldsevensbalance = float(self.tracked_balance)  
-            if (self.tracked_balance>=1440):
+                self.oldupbalance = float(self.lowertens)
+                self.olddownbalance = float(self.lowertens)-self.tens
+            if ((self.tracked_balance<=(self.olddownbalance+(self.neXtbet*2))) and (self.tracked_balance==self.oldsevensbalance)):
+                self.neXtbet = self.snowy*2
+                self.oldsevensbalance = float(self.tracked_balance)
+                self.olddownbalance = float(self.lowertens) 
+                self.oldupbalance = float(self.lowertens)
+            if ((self.tracked_balance>=(self.oldupbalance+(self.tens*4))) and (self.tracked_balance==self.oldsevensbalance)):
+                self.neXtbet = self.snowy*2
+                self.oldsevensbalance = float(self.tracked_balance)
+                self.oldupbalance = float(self.lowertens)
+                self.olddownbalance = float(self.lowertens)-self.tens
+            if (self.tracked_balance>=(self.initial_balance*1.24)):
                 self.log("winner winner chicken dinner")
                 self.heartbeat = False
+                os.remove(STATE_FILE)
                 return
             self.shadow = float(self.tracked_balance) 
             self.save_state()
-            self.bet_in_flight = True
-            jsfool = f"""
-            (function() {{
-                var b_min = document.getElementById('b_min');
-                var pct_chance = document.getElementById('pct_chance');
-                var pct_bet = document.getElementById('pct_bet');
-                var a_lo = document.getElementById('a_lo');
+            if self.heartbeat:
+               jsfool = f"""
+               (function() {{
+                   var b_min = document.getElementById('b_min');
+                   var pct_chance = document.getElementById('pct_chance');
+                   var pct_bet = document.getElementById('pct_bet');
+                   var a_lo = document.getElementById('a_lo');
                 
-                if(b_min && pct_chance && pct_bet && a_lo) {{
-                    b_min.click();
-                    pct_chance.value = '49.5';
-                    pct_bet.value = '{self.neXtbet:.8f}';
-                    a_lo.click();
-                }}
-            }})();
-            """
-            self.browser_view.page().runJavaScript(jsfool)
+                   if(b_min && pct_chance && pct_bet && a_lo) {{
+                       b_min.click();
+                       pct_chance.value = '49.5';
+                       pct_bet.value = '{self.neXtbet:.8f}';
+                       a_lo.click();
+                   }}
+               }})();
+               """
+               self.browser_view.page().runJavaScript(jsfool)
+               self.bet_in_flight = True
         QTimer.singleShot(150, self.process_tick) 
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
