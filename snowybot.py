@@ -324,7 +324,7 @@ class BotEngine(QMainWindow):
         else:
             self.basebet = round(balance / 800, 8)
         
-        self.snowy = self.basebet*1.44
+        self.snowy = float(self.basebet)
         self.tens = self.basebet * 10.0
         self.sevens = self.basebet * 6.9
         self.eights = self.basebet * 7.9
