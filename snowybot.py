@@ -285,10 +285,12 @@ class BotEngine(QMainWindow):
             if self.is_running and (self.prev_wins > 0 or self.prev_losses > 0):
                 if current_losses > self.prev_losses and delta > 0:
                     print("🚨 CRITICAL ANOMALY: Balance went UP on match REDS.")
-                    sys.exit()
+                    self.heartbeat = False
+                    os.remove(STATE_FILE)
                 elif current_wins > self.prev_wins and delta < 0:
                     print("🚨 CRITICAL ANOMALY: Balance went DOWN on match GREENS.")
-                    sys.exit()
+                    self.heartbeat = False
+                    os.remove(STATE_FILE)
             sess = self.tracked_balance - self.initial_balance
             if current_losses > self.prev_losses:
                 print(f"⚡Loss Confirmed: Balance decreased to {current_balance:.8f} | D: {delta:+.8f} | profit: {sess:+.8f}")
@@ -324,7 +326,7 @@ class BotEngine(QMainWindow):
         else:
             self.basebet = round(balance / 800, 8)
         
-        self.snowy = float(self.basebet)
+        self.snowy = self.basebet
         self.tens = self.basebet * 10.0
         self.sevens = self.basebet * 6.9
         self.eights = self.basebet * 7.9
@@ -433,6 +435,7 @@ class BotEngine(QMainWindow):
                 self.log("winner winner chicken dinner")
                 self.heartbeat = False
                 os.remove(STATE_FILE)
+                sys.exit()
                 return
             self.shadow = float(self.tracked_balance) 
             self.save_state()
@@ -455,7 +458,6 @@ class BotEngine(QMainWindow):
                self.browser_view.page().runJavaScript(jsfool)
                self.bet_in_flight = True
         QTimer.singleShot(150, self.process_tick) 
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
